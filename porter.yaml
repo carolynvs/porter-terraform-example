@@ -1,0 +1,127 @@
+mixins:
+  - gcloud
+  - terraform:
+      clientVersion: 1.0.0
+
+name: porter-terraform-example
+version: 0.1.0
+description: "An example Porter Terraform/GKE bundle"
+registry: ghcr.io/bdegeeter
+
+parameters:
+  - name: tfstate
+    type: file
+    path: /cnab/app/terraform/terraform.tfstate
+    source:
+      output: tfstate
+  - name: myvar
+    type: string
+    default: "porter example"
+    env: TF_VAR_myvar
+
+  - name: username
+    type: string
+    default: porter-default
+    env: TF_VAR_username
+
+  - name: gcp_project_id
+    type: string
+    env: TF_VAR_gcp_project_id
+
+  - name: gcp_location
+    type: string
+    default: us-central1
+    env: TF_VAR_gcp_location
+
+  - name: gcp_region
+    type: string
+    default: us-central1-a
+    env: TF_VAR_gcp_region
+
+outputs:
+  - name: tfstate
+    type: file
+    path: /cnab/app/terraform/terraform.tfstate
+
+  - name: myvar
+    type: string
+    applyTo:
+      - install
+      - upgrade
+
+  - name: kubeconfig_content
+    type: string
+    applyTo:
+      - install
+      - upgrade
+
+credentials:
+  - name: gcloud-key-file
+    path: /cnab/app/gcloud.json
+
+install:
+  - gcloud:
+      description: "Authenticate"
+      groups:
+        - auth
+      command: activate-service-account
+      flags:
+        key-file: gcloud.json
+  - terraform:
+      description: "Install Terraform assets"
+      outputs:
+        - name: myvar
+        - name: kubeconfig_content
+
+upgrade:
+  - gcloud:
+      description: "Authenticate"
+      groups:
+        - auth
+      command: activate-service-account
+      flags:
+        key-file: gcloud.json
+  - terraform:
+      description: "Upgrade Terraform assets"
+      outputs:
+        - name: myvar
+        - name: kubeconfig_conten
+
+show:
+  - terraform:
+      description: "Invoke 'terraform show'"
+
+plan:
+  - gcloud:
+      description: "Authenticate"
+      groups:
+        - auth
+      command: activate-service-account
+      flags:
+        key-file: gcloud.json
+  - terraform:
+      description: "Invoke 'terraform plan'"
+      flags:
+        no-color:
+        out: "/dev/null"
+        var:
+          - "'myvar={{bundle.parameters.myvar}}'"
+
+# Note: this can't be 'version:' as this would conflict with top-level field
+# Hence the need for the 'arguments:' override
+printVersion:
+  - terraform:
+      description: "Invoke 'terraform version'"
+      arguments:
+        - "version"
+
+uninstall:
+  - gcloud:
+      description: "Authenticate"
+      groups:
+        - auth
+      command: activate-service-account
+      flags:
+        key-file: gcloud.json
+  - terraform:
+      description: "Uninstall Terraform assets"
