@@ -20,7 +20,8 @@ jobs:
   publish:
     # Specify the type of machine you want the job to run on. We chose ubuntu-latest.
     runs-on: ubuntu-latest
-
+    permissions:
+      packages: write
     steps:
       # Check out code
       - uses: actions/checkout@v1
