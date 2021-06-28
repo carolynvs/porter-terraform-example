@@ -27,7 +27,7 @@ jobs:
       # Use Porter GH action to set up Porter.
       # You can specify the version of Porter that you want installed by adding the lines for with and porter_version as explained above.
       - name: Setup Porter
-        uses: getporter/gh-action@v0.1.1
+        uses: getporter/gh-action@v0.1.3
       - name: Install Porter mixins
         run: |
           porter mixins install gcloud
