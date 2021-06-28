@@ -56,11 +56,11 @@ Generating new credential porter-terraform-example from bundle porter-terraform-
 ### Install Bundle
 
 ```
-porter install --reference ghcr.io/bdegeeter/porter-terraform-example:v0.1.0 --cred gcloud-key-file --param="gcp_project_id=${GCP_PROJECT_ID}"
+porter install --reference ghcr.io/bdegeeter/porter-terraform-example:v0.1.0 --cred porter-terraform-example --param="gcp_project_id=${GCP_PROJECT_ID}"
 ```
 
 ### Uninstall Bundle
 
 ```
-porter uninstall --reference ghcr.io/bdegeeter/porter-terraform-example:v0.1.0 --cred gcloud-key-file --param="gcp_project_id=${GCP_PROJECT_ID}"
+porter uninstall --reference ghcr.io/bdegeeter/porter-terraform-example:v0.1.0 --cred porter-terraform-example --param="gcp_project_id=${GCP_PROJECT_ID}"
 ```
