@@ -1,6 +1,7 @@
 FROM debian:stretch-slim
 
 ARG BUNDLE_DIR
+LABEL org.opencontainers.image.source https://github.com/bdegeeter/porter-terraform-example
 
 RUN apt-get update && apt-get install -y ca-certificates
 
