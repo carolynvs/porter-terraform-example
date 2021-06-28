@@ -26,8 +26,14 @@ gcloud iam service-accounts keys create ~/.config/gcloud-porter-deploy-private-k
 
 gcloud projects add-iam-policy-binding ${GCP_PROJECT_ID} \
     --member="serviceAccount:porter-deploy@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
-    --role="roles/container.clusterAdmin" \
-    --role="roles/iam.serviceAccountUser" \
+    --role="roles/container.clusterAdmin"
+
+gcloud projects add-iam-policy-binding ${GCP_PROJECT_ID} \
+    --member="serviceAccount:porter-deploy@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
+    --role="roles/iam.serviceAccountUser"
+
+gcloud projects add-iam-policy-binding ${GCP_PROJECT_ID} \
+    --member="serviceAccount:porter-deploy@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
     --role="roles/compute.instanceAdmin.v1"
 ```
 
