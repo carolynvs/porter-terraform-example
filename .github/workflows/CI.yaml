@@ -12,7 +12,6 @@ on:
 # To do this, go to settings -> secrets -> new secret.
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 # A workflow can be made of many jobs, but this example puts all the steps under one job.
 jobs:
@@ -46,7 +45,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.CR_TOKEN }}
       # Run publish.
       # If any of the porter commands above fail, the workflow will stop, so your bundle will only be published if it works properly.
       - name: Porter Publish
