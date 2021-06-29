@@ -27,6 +27,13 @@ parameters:
   - name: gcp_project_id
     type: string
     env: TF_VAR_gcp_project_id
+    source:
+      output: gcp_project_id
+    applyTo: # override the default applyTo for parameters with an output source so that it is required for install
+      - install
+      - upgrade # User doesn't have to pass this in for subsequent actions, porter will inject it for upgrade and uninstall
+      - uninstall
+      # TODO: Add any custom actions that use this parameter
 
   - name: gcp_location
     type: string
@@ -55,11 +62,18 @@ outputs:
       - install
       - upgrade
 
+  - name: gcp_project_id
+    type: string
+    path: /cnab/app/gcp_project_id
+    applyTo:
+      - install # Tell porter to remember this value for subsequent actions after install, re-injecting it back into the bundle
+
 credentials:
   - name: gcloud-key-file
     path: /cnab/app/gcloud.json
 
 install:
+  # TODO: Write gcp_project_id to /cnab/app/gcp_project_id so that Porter can persist it for you
   - gcloud:
       description: "Authenticate"
       groups:
